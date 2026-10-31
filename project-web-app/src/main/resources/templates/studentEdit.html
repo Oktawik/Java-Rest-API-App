@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/css/edit-style.css}" rel="stylesheet" />
+<title>Edycja studenta</title>
+</head>
+<body>
+    <div class="root" th:with="isDelete=${#strings.equalsIgnoreCase(param.delete,'true')}">
+        <form action="#" th:action="@{/studentEdit}" th:object="${student}" method="POST" th:with="akcja=*{studentId} ? (${isDelete}?'delete':'update') :'create', opis=*{studentId} ? (${isDelete}?'Usuń':'Aktualizuj') : 'Utwórz'" autocomplete="off">
+            <h1 th:text="${opis} + ' studenta'">Edytuj studenta</h1>
+            
+            <div class="err" th:if="${#fields.hasErrors('*')}">
+                BŁĘDY:
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Wprowadzone dane są niepoprawne!</li>
+                </ul>
+            </div>
+            
+            <div class="container">
+                <div class="btns-panel">
+                    <input class="btn" type="submit" name="create" value="create" th:name="${akcja}" th:value="${opis}" />
+                    <input class="btn" type="submit" name="cancel" value="Anuluj" />
+                </div>
+                <div th:if="*{studentId}">
+                    <label for="studentId" class="lbl">Id:</label>
+                    <input th:field="*{studentId}" class="fld" readonly />
+                </div>
+                <div>
+                    <label for="imie" class="lbl">Imię:</label>
+                    <input th:field="*{imie}" class="fld" th:class="${#fields.hasErrors('imie')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('imie')}" th:errors="*{imie}">Error</span>
+                </div>
+                <div>
+                    <label for="nazwisko" class="lbl">Nazwisko:</label>
+                    <input th:field="*{nazwisko}" class="fld" th:class="${#fields.hasErrors('nazwisko')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('nazwisko')}" th:errors="*{nazwisko}">Error</span>
+                </div>
+                <div>
+                    <label for="nrIndeksu" class="lbl">Nr Indeksu:</label>
+                    <input th:field="*{nrIndeksu}" class="fld" th:class="${#fields.hasErrors('nrIndeksu')}? 'err' : 'fld'" size="20" />
+                    <span class="err" th:if="${#fields.hasErrors('nrIndeksu')}" th:errors="*{nrIndeksu}">Error</span>
+                </div>
+                <div>
+                    <label for="email" class="lbl">Email:</label>
+                    <input th:field="*{email}" class="fld" th:class="${#fields.hasErrors('email')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span>
+                </div>
+                <div>
+                    <label for="stacjonarny" class="lbl">Stacjonarny:</label>
+                    <select th:field="*{stacjonarny}" class="fld">
+                        <option th:value="true">Tak</option>
+                        <option th:value="false">Nie</option>
+                    </select>
+                    <span class="err" th:if="${#fields.hasErrors('projekty')}" th:errors="*{projekty}">Error</span>
+                </div>
+                <!-- 
+                <div>
+                    <label for="projekty" class="lbl">Projekty:</label>
+                    <select multiple th:field="*{projekty}" class="fld">
+                        <option th:each="projekt : ${projekty}" th:value="${projekt.id}" th:text="${projekt.nazwa}"></option>
+                    </select>
+                </div>
+                      -->          
+               <!-- 
+                <div>
+    				<label for="projekty" class="lbl">Projekt:</label>
+    				<select name="projektId" class="fld" multiple>
+        				<option value="">Wybierz projekt</option>
+        				<option th:each="projekt : ${projekty}" th:value="${projekt.projektId}" th:text="${projekt.nazwa}"></option>
+    				</select>
+    				<span class="err" th:if="${#fields.hasErrors('projekty')}" th:errors="*{projekty}">Error</span>
+				</div>  -->
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/edit-style.css}" rel="stylesheet" />
+    <title>Edycja studenta</title>
+</head>
+<body>
+    <div class="root" th:with="isDelete=${#strings.equalsIgnoreCase(param.delete,'true')}">
+        <form action="#" th:action="@{/studentEdit}" th:object="${student}" method="POST" th:with="akcja=*{studentId} ? (${isDelete}?'delete':'update') :'create', opis=*{studentId} ? (${isDelete}?'Usuń':'Aktualizuj') : 'Utwórz'" autocomplete="off">
+            <h1 th:text="${opis} + ' studenta'">Edytuj studenta</h1>
+            
+            <div class="err" th:if="${#fields.hasErrors('*')}">
+                BŁĘDY:
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Wprowadzone dane są niepoprawne!</li>
+                </ul>
+            </div>
+            
+            <div class="container">
+                <div class="btns-panel">
+                    <input class="btn" type="submit" name="create" value="create" th:name="${akcja}" th:value="${opis}" />
+                    <input class="btn" type="submit" name="cancel" value="Anuluj" />
+                </div>
+                <div th:if="*{studentId}">
+                    <label for="studentId" class="lbl">Id:</label>
+                    <input th:field="*{studentId}" class="fld" readonly />
+                </div>
+                <div>
+                    <label for="imie" class="lbl">Imię:</label>
+                    <input th:field="*{imie}" class="fld" th:class="${#fields.hasErrors('imie')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('imie')}" th:errors="*{imie}">Error</span>
+                </div>
+                <div>
+                    <label for="nazwisko" class="lbl">Nazwisko:</label>
+                    <input th:field="*{nazwisko}" class="fld" th:class="${#fields.hasErrors('nazwisko')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('nazwisko')}" th:errors="*{nazwisko}">Error</span>
+                </div>
+                <div>
+                    <label for="nrIndeksu" class="lbl">Nr Indeksu:</label>
+                    <input th:field="*{nrIndeksu}" class="fld" th:class="${#fields.hasErrors('nrIndeksu')}? 'err' : 'fld'" size="20" />
+                    <span class="err" th:if="${#fields.hasErrors('nrIndeksu')}" th:errors="*{nrIndeksu}">Error</span>
+                </div>
+                <div>
+                    <label for="email" class="lbl">Email:</label>
+                    <input th:field="*{email}" class="fld" th:class="${#fields.hasErrors('email')}? 'err' : 'fld'" size="45" />
+                    <span class="err" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span>
+                </div>
+                <div>
+                    <label for="stacjonarny" class="lbl">Stacjonarny:</label>
+                    <select th:field="*{stacjonarny}" class="fld">
+                        <option th:value="true">Tak</option>
+                        <option th:value="false">Nie</option>
+                    </select>
+                    <span class="err" th:if="${#fields.hasErrors('projekty')}" th:errors="*{projekty}">Error</span>
+                </div>
+                <div>
+                    <label for="projekty" class="lbl">Projekty:</label>
+                    <select multiple th:id="projektId" name="projektId" class="fld">
+                        <option value="" disabled>Wybierz projekt</option>
+                        <option th:each="projekt : ${projekty}" th:value="${projekt.projektId}" th:text="${projekt.nazwa}"></option>
+                    </select>
+                    <span class="err" th:if="${#fields.hasErrors('projekty')}" th:errors="*{projekty}">Error</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            // Zbiera zaznaczone projekty i ustawia wartość pola select
+            var selectedProjekty = /*[[${student.projekty}]]*/;
+            if (selectedProjekty && selectedProjekty.length > 0) {
+                selectedProjekty.forEach(function(projekt) {
+                    $("#projektId option[value='" + projekt.projektId + "']").prop("selected", true);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+  -->
